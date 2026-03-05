@@ -9,6 +9,7 @@ module tb_mux;
     initial begin
         $monitor($time, "i0 = %b | i1 = %b | i2 = %b | i3 = %b | sel1 = %b | sel2 = %b | muxOut = %b", count[0], count[1], count[2], count[3], count[4], count[5], muxOut);
         for (count = 0; count != 6'b111111; count++) #10;
+
         #10 $stop;
     end
 
