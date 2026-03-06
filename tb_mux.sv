@@ -5,13 +5,22 @@ module tb_mux;
     logic [31:0] muxOut;
     logic [3:0] [31:0] inputs;
 
-    mux dut(.f(muxOut), .i0(inputs[0]), .i1(inputs[1]), .i2(inputs[2]), .i3(inputs[3]), .sel1(selector[0]), .sel2(selector[1]));
+    mux dut(.f(muxOut), .i0(inputs[0]), .i1(inputs[1]), .i2(inputs[2]), .i3(inputs[3]), .sel(selector));
 
     initial begin
         $monitor($time, "i0 = %d | i1 = %d | i2 = %d | i3 = %d | sel1 = %b | sel2 = %b | muxOut = %d", inputs[0], inputs[1], inputs[2], inputs[3], selector[0], selector[1], muxOut);
 
+        inputs = '0; #10;
+
+        for (int i = 0; i <= 2'b11; i++) begin
+            selector = i;
+            
+            inputs[i] = '1; #10;
+            
+            inputs[i] = '0; #10;
+        end
+
         $stop;
     end
-
 
 endmodule: tb_mux
