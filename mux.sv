@@ -4,13 +4,14 @@ module mux (
     input logic [1:0] sel
 );
 
-    and g0 [31:0] (f0, i0, not_sel0, not_sel1),
-        g1 [31:0] (f1, i1, sel[0], not_sel1),
-        g2 [31:0] (f2, i2, not_sel0, sel[1]),
-        g3 [31:0] (f3, i3, sel[0], sel[1]);
-
-    or g4 [31:0] (f, f0, f1, f2, f3);
-    not g5 (not_sel0, sel[0]),
-        g6 (not_sel1, sel[1]);
+    always_comb begin
+        case(sel)
+            2'b00: f = i0;
+            2'b01: f = i1;
+            2'b10: f = i2;
+            2'b11: f = i3;
+            default: f = '0;
+        endcase
+    end
 
 endmodule

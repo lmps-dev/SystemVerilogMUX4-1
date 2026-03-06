@@ -12,12 +12,32 @@ module tb_mux;
 
         inputs = '0; #10;
 
+        // Selects the only input != 0.
         for (int i = 0; i <= 2'b11; i++) begin
             selector = i;
             
-            inputs[i] = '1; #10;
+            inputs[i] = (i + 1) * 10; #10;
             
             inputs[i] = '0; #10;
+        end
+
+        // Selects 1 input even when there is another != 0.
+        for (int i = 0; i <= 2'b11; i++) begin
+            selector = i;
+            
+            inputs[i] = (i + 1) * 10; #10;
+            inputs[3 - i] = (4 - i) * 10; #10;
+            
+            inputs = '0; #10;
+        end
+
+        for (int i = 0; i <= 2'b11; i++) begin
+            inputs[i] = (i + 1) * 10; #10;
+
+        end
+
+        for (int i = 0; i <= 2'b11; i++) begin
+            selector = i; #10;
         end
 
         $stop;
