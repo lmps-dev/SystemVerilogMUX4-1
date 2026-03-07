@@ -8,36 +8,20 @@ module tb_mux;
     mux dut(.f(muxOut), .i0(inputs[0]), .i1(inputs[1]), .i2(inputs[2]), .i3(inputs[3]), .sel(selector));
 
     initial begin
-        $monitor($time, "i0 = %d | i1 = %d | i2 = %d | i3 = %d | sel1 = %b | sel2 = %b | muxOut = %d", inputs[0], inputs[1], inputs[2], inputs[3], selector[0], selector[1], muxOut);
+        $monitor($time, "i0 = %d | i1 = %d | i2 = %d | i3 = %d | sel[1] = %b | sel[0] = %b | muxOut = %d", inputs[0], inputs[1], inputs[2], inputs[3], selector[1], selector[0], muxOut);
 
         inputs = '0; #10;
+        muxOut = '0; #10;
 
-        // Selects the only input != 0.
-        for (int i = 0; i <= 2'b11; i++) begin
-            selector = i;
-            
-            inputs[i] = (i + 1) * 10; #10;
-            
-            inputs[i] = '0; #10;
-        end
-
-        // Selects 1 input even when there is another != 0.
-        for (int i = 0; i <= 2'b11; i++) begin
-            selector = i;
-            
-            inputs[i] = (i + 1) * 10; #10;
-            inputs[3 - i] = (4 - i) * 10; #10;
-            
-            inputs = '0; #10;
-        end
-
-        for (int i = 0; i <= 2'b11; i++) begin
-            inputs[i] = (i + 1) * 10; #10;
-
-        end
-
-        for (int i = 0; i <= 2'b11; i++) begin
-            selector = i; #10;
+        for (int count = 0; count <= 1'b1; count++) begin
+            for (int i = 0; i <= 2'b11; i++) begin
+                selector = i;
+                
+                for (int j = 0; j <= 2'b11; j++) begin
+                    inputs[j] = $urandom_range(0, 2**6) * 10; #10;
+                
+                end
+            end
         end
 
         $stop;
